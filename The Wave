@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+int searchIndex(int arr[],int number,int n){
+        int low=0;
+        int high=n-1;
+        int index=-1;
+        while(low<=high){
+            int mid=(low+high)>>1;
+            if(arr[mid]>=number){
+                 index=mid;
+                 high=mid-1;
+            }else{
+                low=mid+1;
+            }
+        }
+        return index;
+}
+int main(){
+    int n,q;
+    cin>>n>>q;
+    int a[n];
+    for(int i=0;i<n;i++){
+        cin>>a[i];
+    }
+    sort(a,a+n);
+    while(q>0){
+        int number;
+        cin>>number;
+        //finding greater or equal value
+        int index=searchIndex(a,number,n);
+      // cout<<index<<endl;
+       if(index==-1){
+            cout<<"POSITIVE"<<endl;
+       }
+       else if(a[index]==number){
+            cout<<0<<endl;
+       }else if(a[index]>number){
+              int neg=n-index;
+              if(neg%2){
+                 cout<<"NEGATIVE"<<endl;
+              }else{
+                cout<<"POSITIVE"<<endl;
+              }
+        }
+        q--;
+    }
+}
