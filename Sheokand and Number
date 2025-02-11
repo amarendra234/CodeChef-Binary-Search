@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+int setBit(int n){
+    int count=0;
+    while(n){
+        count++;
+        n=n&(n-1);
+    }
+    return count;
+}
+int findPowerOf2(int n){
+    int i=0;
+    while(pow(2,i)<n){
+        i++;
+    }
+    return i;
+}
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        if(n==1){
+            cout<<2<<endl;
+        }else{
+            int count_set_bit=setBit(n);
+            if(count_set_bit==1){
+                cout<<1<<endl;
+            }else if(count_set_bit==2){
+               cout<<0<<endl;
+            }else{
+                int originalNumber=n;
+                // finding next power of 2
+                int index=findPowerOf2(n);
+                int res=INT_MAX;
+                // find next number where 2 digit is set
+                int next_number=pow(2,index)-originalNumber;
+                res=min(res,next_number+1);
+                // find sum of power of two number
+                int rest_number=n-pow(2,index-1);
+                int index2=findPowerOf2(rest_number);
+                if(index2!=index-1){
+                  int number=pow(2,index-1)+pow(2,index2);
+                  res=min(res,abs(n-number));
+                }
+                if(index2-1!=index-1){
+                    int number=pow(2,index-1)+pow(2,index2-1);
+                  res=min(res,abs(n-number));
+                }
+                // remove extra set bit >2
+                while(count_set_bit!=2){
+                    n=n&(n-1);
+                    count_set_bit--;
+                }
+                res=min(res,originalNumber-n);
+               // int res=min(next_number-originalNumber,originalNumber-n);
+                cout<<res<<endl;
+            }
+        }
+    }
+}
